@@ -3,7 +3,7 @@
 ## Description
 A Python Application based on a Microservice architecture. Uses Docker, MYSQL and has been tested with Kubernetes. Application produces Signals which analyse positive and negative movements in Market Prices. The Markets allow the use of their API's for ingesting and analysing market data, the Application will also web scrape to gather information from markets without API's.
 
-![CryptoSignal](CryptoSignal.png)
+![CryptoSignal](CryptoSignal.png =250x)
 
 ## Objectives
 
