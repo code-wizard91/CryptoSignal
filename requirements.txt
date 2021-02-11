@@ -1,0 +1,4 @@
+pycrypto
+autobahn
+twisted
+simplejson
