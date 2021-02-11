@@ -1,7 +1,9 @@
-Cryptosignal:
-  build: .
-  restart: always
-  stdin_open: true
-  tty: true
-  ports:
-    - "22"
+version: "3.3"
+services:
+    Cryptosignal:
+      build: .
+      restart: always
+      stdin_open: true
+      tty: true
+      ports:
+        - "22"
