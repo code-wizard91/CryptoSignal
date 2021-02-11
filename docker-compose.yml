@@ -1,4 +1,4 @@
-pytrader:
+Cryptosignal:
   build: .
   restart: always
   stdin_open: true
