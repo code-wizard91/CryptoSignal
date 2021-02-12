@@ -134,8 +134,8 @@ def try_get_lock_or_break_open():
     lock = threading.RLock()
     lock.acquire()
     api.Signal._lock = lock
-    print "### could not acquire signal lock, frozen slot somewhere?"
-    print "### please see the stacktrace log to determine the cause."
+    print ("### could not acquire signal lock frozen slot somewhere")
+    print ("### please see the stacktrace log to determine the cause.")
 
 class Win:
     """represents a curses window"""
@@ -282,7 +282,7 @@ class WinConsole(Win):
         self.width = self.termwidth - int(self.termwidth / 2) - 2
         self.posy = self.termheight - self.height
 
-    def slot_debug(self, dummy_instance, (txt)):
+    def slot_debug(self, dummy_instance, txt):
         """this slot will be connected to all debug signals."""
         if txt.startswith('[c]'):
             self.write("\n   ".join(textwrap.wrap(txt.replace('[c]', ''), self.width - 3)))
@@ -348,7 +348,7 @@ class PluginConsole(Win):
         self.posy = self.termheight - self.height
         self.posx = self.termwidth - int(self.termwidth / 2) + 1
 
-    def slot_debug(self, dummy_instance, (txt)):
+    def slot_debug(self, dummy_instance, txt):
         """this slot will be connected to all plugin debug signals."""
         if (txt.startswith('[s]')):
             self.write(textwrap.fill(txt.replace('[s]', ' '), self.width))
@@ -1042,7 +1042,7 @@ class WinStatus(Win):
         """the callback funtion called by the Api() instance"""
         self.do_paint()
 
-    def slot_orderlag(self, dummy_sender, (usec, text)):
+    def slot_orderlag(self, dummy_sender, usec, text):
         """slot for order_lag mesages"""
         self.order_lag = usec
         self.order_lag_txt = text
@@ -1413,7 +1413,7 @@ class LogWriter():
         # not needed
         pass
 
-    def slot_debug(self, sender, (msg)):
+    def slot_debug(self, sender, msg):
         """handler for signal_debug signals"""
         name = "%s.%s" % (sender.__class__.__module__, sender.__class__.__name__)
         logging.debug("%s:%s", name, msg)
@@ -1746,16 +1746,10 @@ def main():
             # curses ended, terminal should be back in normal (cooked) mode
 
             if len(debug_tb):
-                print "\n\n*** error(s) in curses_loop() that caused unclean shutdown:\n"
+                print ("\n\n*** error(s) in curses_loop() that caused unclean shutdown:\n")
                 for trb in debug_tb:
-                    print trb
+                    print(trb)
             else:
-                print
-                print "***************************************************************"
-                print "*  Please donate!                                             *"
-                print "*    caktux: 0xf05b7f96ac8b607fe62bf77b8aaf926d719d4294 (ETH) *"
-                print "*            1EMtjvaxCGwFrLa8LHPwqa8xrxnj2VXFL5 (BTC)         *"
-                print "***************************************************************"
-
+                print("Thank you for using CryptoSignal")
 if __name__ == "__main__":
     main()
