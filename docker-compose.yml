@@ -1,9 +1,34 @@
 version: "3.3"
 services:
-    Cryptosignal:
-      build: .
-      restart: always
-      stdin_open: true
-      tty: true
-      ports:
-        - "22"
+   Cryptosignal:
+     build: .
+     restart: always
+     stdin_open: true
+     tty: true
+     ports:
+       - "22"
+
+  Cryptosignaltwo:
+    image: alimizan/Cryptosignaltwo:latest
+    ports:
+    - target: 5001
+      published: 5001
+      protocol: tcp
+    deploy:
+      replicas: 2
+    container_name: Cryptosignaltwo
+    build: Cryptosignaltwo/
+    
+    
+  Cryptosignalthree:
+    image: alimizan/Cryptosignalthree:latest
+    ports:
+    - target: 5001
+      published: 5001
+      protocol: tcp
+    deploy:
+      replicas: 2
+    container_name: Cryptosignalthree
+    build: Cryptosignalthree/
+        
+    
