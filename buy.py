@@ -4,9 +4,9 @@ trading robot - buy BTC
 save this file in the same folder as 'pytrader.py' as 'buy.py'
 to load this strategy execute 'pytrader.py' with the --strategy option:
 
-$ ./pytrader.py --strategy buy.py
+$ ./cryptosigal.py --strategy buy.py
 
-You can make changes to this file whilst 'pytrader.py' is running.
+You can make changes to this file whilst 'cryptosigal.py' is running.
 Dynamically reload() buy pressing the 'l' key in the pytrader terminal
 Other keypresses are defined in the 'slot_keypress' function below.
 
