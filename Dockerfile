@@ -19,7 +19,7 @@ sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config && sed -ri 's/#UsePAM 
 service ssh start\n\
 exec >/dev/tty 2>/dev/tty </dev/tty\n\
 cd /cryptosignalr && screen -s /bin/bash -dmS cryptosignal ./cryptosignal.py --strategy=balancer\n\
-" > /cryptosignal/launch-pytrader.sh
+" > /cryptosignal/launch-cryptosignal.sh
 RUN chmod +x /cryptosignal/launch-cryptosignal.sh
 
 # Setup supervisord
