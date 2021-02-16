@@ -1,26 +1,4 @@
-FROM python:2.7
 
-RUN mkdir -p /cryptosignal
-ADD ./requirements.txt /cryptosignal/requirements.txt
-WORKDIR /cryptosignal
-RUN pip install -r requirements.txt
-
-RUN echo America/New_York | tee /etc/timezone && dpkg-reconfigure --frontend noninteractive tzdata
-
-RUN apt-get update && apt-get upgrade -y
-RUN apt-get install -y supervisor openssh-server
-RUN apt-get install -y screen
-
-RUN mkdir /root/.ssh
-ADD authorized_keys /root/.ssh/authorized_keys
-
-RUN /bin/echo -e "#!/bin/bash\n\
-sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config && sed -ri 's/#UsePAM no/UsePAM no/g' /etc/ssh/sshd_config\n\
-service ssh start\n\
-exec >/dev/tty 2>/dev/tty </dev/tty\n\
-cd /cryptosignalr && screen -s /bin/bash -dmS cryptosignal ./cryptosignal.py --strategy=balancer\n\
-" > /cryptosignal/launch-cryptosignal.sh
-RUN chmod +x /cryptosignal/launch-cryptosignal.sh
 
 # Setup supervisord
 RUN /bin/echo -e "[supervisord]\n\
