@@ -23,8 +23,8 @@ services:
   Cryptosignalthree:
     image: alimizan/Cryptosignalthree:latest
     ports:
-    - target: 5001
-      published: 5001
+    - target: 5002
+      published: 5002
       protocol: tcp
     deploy:
       replicas: 2
