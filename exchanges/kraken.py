@@ -385,3 +385,69 @@ class PollClient(BaseObject):
         except ValueError as exc:
             self.debug("### exception in http_signed_call:", exc)
 
+    def send_order_add(self, typ, price, volume):
+        """send an order"""
+        reqid = "order_add:%s:%f:%f" % (typ, price, volume)
+        self.debug("Sending %s" % reqid)
+        typ = "sell" if typ == "ask" else "buy"
+        if price > 0:
+            params = {
+                "pair": self.pair,
+                "type": typ,
+                "ordertype": "limit",
+                "price": str(price),
+                "volume": str(volume)
+            }
+        else:
+            params = {
+                "pair": self.pair,
+                "type": typ,
+                "ordertype": "market",
+                "volume": str(volume)
+            }
+
+        api = "private/AddOrder"
+        self.enqueue_http_request(api, params, reqid)
+
+    def send_order_cancel(self, txid):
+        """cancel an order"""
+        params = {"txid": txid}
+        reqid = "order_cancel:%s" % txid
+        self.debug("Sending %s" % reqid)
+        api = "private/CancelOrder"
+        self.enqueue_http_request(api, params, reqid)
+
+    def slot_timer_lag(self, _sender, _data):
+        """get server time and calculate lag"""
+        self.request_lag()
+
+    def slot_timer_info(self, _sender, _data):
+        """download info data"""
+        self.request_info()
+
+    def slot_timer_ticker(self, _sender, _data):
+        """get ticker prices"""
+        self.request_ticker()
+        # reqid = "ticker"
+        # api = "public/Ticker"
+        # self.enqueue_http_request(api, {}, reqid)
+
+    def slot_timer_volume(self, _sender, _data):
+        """download volume and fee data"""
+        self.request_volume()
+
+    def slot_timer_orders(self, _sender, _data):
+        """download orders data"""
+        self.request_orders()
+
+    def slot_timer_depth(self, _sender, _data):
+        """download depth data"""
+        if self.config.get_bool("api", "load_fulldepth"):
+            if not FORCE_NO_FULLDEPTH:
+                self.request_fulldepth()
+
+    def slot_timer_history(self, _sender, _data):
+        """download history data"""
+        if self.config.get_bool("api", "load_history"):
+            if not FORCE_NO_HISTORY:
+                self.request_history()
