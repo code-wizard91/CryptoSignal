@@ -671,4 +671,10 @@ class Strategy(strategy.Strategy):
                     if price > center * self.step_factor_sell:
                         # return mark_own(price)
                         return price
+            else:
+                for price in reversed(prices):
+                    if price < center / self.step_factor:
+                        # return mark_own(price)
+                        return price
 
+        return None
