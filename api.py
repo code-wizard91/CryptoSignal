@@ -1746,3 +1746,33 @@ class OrderBook(BaseObject):
         self.signal_owns_initialized(self, None)
         self.signal_owns_changed(self, None)
 
+        self.orders_updated = time.strftime("%Y-%m-%d %H:%M:%S")
+        self.ready_owns = True
+        self.signal_changed(self, None)
+        self.signal_owns_initialized(self, None)
+        self.signal_owns_changed(self, None)
+
+    def add_own(self, order):
+        """called by api when a new order has been acked after it has been
+        submitted or after a receiving a user_order message for a new order.
+        This is a separate method from _add_own because we additionally need
+        to fire a bunch of signals when this happens"""
+        if not self.have_own_oid(order.oid):
+            self.debug("### adding order:", order.typ, order.price, order.volume, order.oid)
+            self._add_own(order)
+            self.signal_own_added(self, (order))
+            self.signal_changed(self, None)
+            self.signal_owns_changed(self, None)
+
+    def _add_own(self, order):
+        """add order to the list of own orders. This method is used during
+        initial download of complete order list."""
+        if not self.have_own_oid(order.oid):
+            self.owns.append(order)
+
+            # update own volume in that level:
+            self._update_level_own_volume(
+                order.typ,
+                order.price,
+                self.get_own_volume_at(order.price, order.typ)
+            )
